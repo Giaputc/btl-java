@@ -1,11 +1,13 @@
 package  main;
 
 import entity.player;
+import objects.SupperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.Dimension;
+
 
 public class GamePanel extends JPanel implements Runnable{
     final int originalTileSize = 16;
@@ -19,7 +21,9 @@ public class GamePanel extends JPanel implements Runnable{
    KeyHandle keyH = new KeyHandle();
    public player player = new player(this,keyH);
     Thread gameThread;
+    public SupperObject obj[]=new SupperObject[10];
     public  CollisionChecker cChecker=new CollisionChecker(this);
+    public AssetSetter aSetter=new AssetSetter(this);
     TileManager tileM = new TileManager(this);
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
@@ -32,7 +36,9 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread = new Thread(this);
         gameThread.start();
     }
-
+    public void setupGame(){
+        aSetter.setObeject();
+    }
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxScreenCol;
@@ -65,9 +71,15 @@ public class GamePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
+        //Tile
         tileM.draw(g2);
-
+        //object
+        for (int i=0;i<obj.length;i++){
+            if(obj[i]!=null){
+                obj[i].draw(g2,this);
+            }
+        }
+        //player
         player.draw(g2);
 
         g2.dispose();

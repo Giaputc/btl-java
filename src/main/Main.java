@@ -13,6 +13,7 @@ public  class Main {
         window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }
