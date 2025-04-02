@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="image">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/image/Old version-20250324T091645Z-001.zip!/" />
+      <root url="jar://$PROJECT_DIR$/image/boy.zip!/" />
+      <root url="jar://$PROJECT_DIR$/image/sprites.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
