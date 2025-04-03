@@ -13,6 +13,7 @@ GamePanel gp;
 KeyHandle keyH;
 public final int ScreenX;
 public final int ScreenY;
+public int hasKey=0;
     public player(GamePanel gp,KeyHandle keyH){
     this.gp = gp;
     this.keyH = keyH;
@@ -21,6 +22,8 @@ public final int ScreenY;
     solidArea=new Rectangle();
     solidArea.x=8;
     solidArea.y=16;
+    solidAreadDefaultX=solidArea.x;
+    solidAreadDefaultY=solidArea.y;
     solidArea.width=32;
     solidArea.height=32;
 
@@ -83,6 +86,9 @@ public void getPlayerImage(){
             }//Check tile collision
             collisionOn=false;
             gp.cChecker.checkTile(this);
+            //check object collision
+            int objIndex=gp.cChecker.checkObject(this,true);
+            pickUpObject(objIndex);
             //if collision is false,Playẻr can move
             if (collisionOn==false){
                 switch (direction){
@@ -105,10 +111,47 @@ public void getPlayerImage(){
         }
 
     }
+    public void pickUpObject(int i){
+    if(i!=999){
+        String objectName=gp.obj[i].name;
+        switch (objectName){
+            case "Key":
+                hasKey++;
+                gp.playSE(1);
+                gp.obj[i]=null;
+                gp.ui.showMessage("You get a key");
+                break;
+            case "Door":
+                if(hasKey>0){
+                    gp.playSE(3);
+                    gp.obj[i]=null;
+                    hasKey--;
+                    gp.ui.showMessage("You opened a Door");
+                }else {
+                    gp.ui.showMessage("You need a key");
+                }
+
+                break;
+            case "Boots":
+                gp.playSE(2);
+                speed+=1;
+                gp.obj[i]=null;
+                gp.ui.showMessage("speed up ");
+                break;
+            case "Chest":
+                gp.ui.gameFinished=true;
+                gp.stopMusic();
+                gp.playSE(4);
+                break;
+        }
+    }
+
+    }
     public void draw (Graphics2D g2){
         BufferedImage image = null;
         switch (direction){
             case "up":
+
                 if(spriteNumber == 1){
                     image = up1;
                 }else if(spriteNumber == 2){
